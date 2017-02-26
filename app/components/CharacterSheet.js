@@ -13,6 +13,12 @@ export default class CharacterSheet extends Component {
 					title="Back to character selection"
 					color="#BF8E04"
 				/>
+
+				<Button
+					onPress={this.props.deleteCharacter.bind(null, this.props.name)}
+					title="DELETE"
+					color="#BF0074"
+				/>
 			</View>
 		)
 	}
@@ -20,7 +26,8 @@ export default class CharacterSheet extends Component {
 
 CharacterSheet.propTypes = {
 	name: PropTypes.string.isRequired,
-	toCharacterSelect: PropTypes.func.isRequired
+	toCharacterSelect: PropTypes.func.isRequired,
+	deleteCharacter: PropTypes.func.isRequired
 };
 
 /*

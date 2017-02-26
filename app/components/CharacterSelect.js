@@ -1,13 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet, Navigator, TouchableHighlight, Button, ListView, Image } from 'react-native';
 
-export default class CharacterSheet extends Component {
+export default class CharacterSelect extends Component {
 	constructor(props) {
 		super(props);
 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state = {
 			dataSource: ds.cloneWithRows(this.props.characters.concat('$$ADD$$'))
 		};
+	}
+
+	componentWillReceiveProps(newProps) {
+		this.setState({
+			dataSource: this.state.dataSource.cloneWithRows(newProps.characters.concat('$$ADD$$'))
+		});
 	}
 
 	render () {
@@ -41,7 +47,7 @@ export default class CharacterSheet extends Component {
 	}
 }
 
-CharacterSheet.propTypes = {
+CharacterSelect.propTypes = {
 	characters: PropTypes.array.isRequired,
 	selectCharacter: PropTypes.func.isRequired,
 	addCharacter: PropTypes.func.isRequired

@@ -29,7 +29,7 @@ class CharacterSheets extends Component {
 	componentWillMount() {
 		const that = this;
 
-		AsyncStorage.getItem(CHARACTER_STORAGE_NAMES).then(function (charString) {
+		AsyncStorage.getItem(CHARACTER_STORAGE_NAMES).then((charString) => {
 			const characters = JSON.parse(charString);
 			that.setState({
 				characters: characters || [],
@@ -48,23 +48,29 @@ class CharacterSheets extends Component {
 
 		const that = this;
 		const routes = {
-			characterSelect: { title: 'Character Select', index: 2, scene: comps.CharacterSelect },
-			characterSheet: { title: 'Character Sheet', index: 3, scene: comps.CharacterSheet }
+			characterSelect: { title: 'Character Select', scene: comps.CharacterSelect },
+			characterSheet: { title: 'Character Sheet', scene: comps.CharacterSheet },
+			createCharacter: { title: 'Create Character', scene: comps.CreateCharacter }
 		};
 
-		function simpleStateUpdateFn(key) {
-			return function (val) {
-				const newState = _.extend({}, that.state);
-				newState[key] = val;
-				that.setState(newState);
-				AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
+		function updateCharacterList(action, name) {
+			let newCharacterList;
+			if (action === 'add') {
+				newCharacterList = that.state.characters.concat(name);
+			} else if (action === 'remove') {
+				newCharacterList = _.without(that.state.characters, name);
 			}
+			return AsyncStorage.setItem(CHARACTER_STORAGE_NAMES, JSON.stringify(newCharacterList)).then(() => {
+				that.setState({
+					characters: newCharacterList
+				});
+			});
 		}
 
 		return (
 			<Navigator
 				initialRoute={routes.characterSelect}
-				renderScene={function (route, navigator) {
+				renderScene={(route, navigator) => {
 					switch(route.title) {
 						case 'Character Select':
 							return <routes.characterSelect.scene
@@ -76,7 +82,7 @@ class CharacterSheets extends Component {
 									navigator.push(routes.characterSheet)
 								}}
 								addCharacter={() => {
-									return;
+									navigator.push(routes.createCharacter)
 								}}
 							/>;
 							break;
@@ -86,6 +92,26 @@ class CharacterSheets extends Component {
 								toCharacterSelect={() => {
 									navigator.popToTop()
 								}}
+								deleteCharacter={(name) => {
+									updateCharacterList('remove', name).then(() => {
+										navigator.popToTop();
+									});
+								}}
+							/>;
+							break;
+						case 'Create Character':
+							return <routes.createCharacter.scene
+								create={(name) => {
+									const inUse = _.contains(that.state.characters, name);
+									if (inUse) {
+										return true;
+									} else {
+										updateCharacterList('add', name).then(() => {
+											navigator.popToTop();
+										});
+									}
+								}}
+								cancel={() => navigator.popToTop()}
 							/>;
 							break;
 						default:
@@ -96,6 +122,9 @@ class CharacterSheets extends Component {
 										selectedCharacter: name
 									});
 									navigator.push(routes.characterSheet)
+								}}
+								addCharacter={() => {
+									navigator.push(routes.createCharacter)
 								}}
 							/>;
 					}
