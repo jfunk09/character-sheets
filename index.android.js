@@ -5,9 +5,15 @@ import {
 	Text,
 	View,
 	Navigator,
-	TouchableHighlight
+	TouchableHighlight,
+	AsyncStorage
 } from 'react-native';
 import comps from './app/components';
+const _ = require('underscore');
+
+const STORAGE_KEY = '@AsyncStorageCharacterSheets:key';
+const CHARACTER_STORAGE_NAMES = '@AsyncStorageCharactersSheets:names';
+const CHARACTER_STORAGE_BASE = '@AsyncStorageCharactersSheets:';
 
 /*
  * === Components ===
@@ -16,69 +22,81 @@ class CharacterSheets extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			'thingOne': 10,
-			'thingTwo': "hellow"
+			isLoading: true
 		};
 	}
 
-	render() {
+	componentWillMount() {
 		const that = this;
 
+		AsyncStorage.getItem(CHARACTER_STORAGE_NAMES).then(function (charString) {
+			const characters = JSON.parse(charString);
+			that.setState({
+				characters: characters || [],
+				selectedCharacter: null,
+				isLoading: false
+			});
+		});
+	}
+
+	render() {
+		if (this.state.isLoading) {
+			return (
+				<View><Text>Loading...</Text></View>
+			);
+		}
+
+		const that = this;
 		const routes = {
-			main: { title: 'Main Scene', index: 0, scene: comps.TestScene },
-			second: { title: 'Second Scene', index: 1, scene: comps.TestScene2 }
+			characterSelect: { title: 'Character Select', index: 2, scene: comps.CharacterSelect },
+			characterSheet: { title: 'Character Sheet', index: 3, scene: comps.CharacterSheet }
 		};
 
 		function simpleStateUpdateFn(key) {
 			return function (val) {
-				const update = {};
-				update[key] = val;
-				that.setState(update);
+				const newState = _.extend({}, that.state);
+				newState[key] = val;
+				that.setState(newState);
+				AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
 			}
 		}
 
 		return (
 			<Navigator
-				initialRoute={{ title: routes.main.title, index: 0 }}
+				initialRoute={routes.characterSelect}
 				renderScene={function (route, navigator) {
-					switch(route.index) {
-						case 0:
-							return <routes.main.scene
-								toTwo={() => {
-									navigator.push(routes.second);
+					switch(route.title) {
+						case 'Character Select':
+							return <routes.characterSelect.scene
+								characters={that.state.characters}
+								selectCharacter={(name) => {
+									that.setState({
+										selectedCharacter: name
+									});
+									navigator.push(routes.characterSheet)
 								}}
-
-								thingOne={that.state.thingOne}
-								thingTwo={that.state.thingTwo}
-
-								updateThingTwo={simpleStateUpdateFn('thingTwo')}
+								addCharacter={() => {
+									return;
+								}}
 							/>;
 							break;
-						case 1:
-							return <routes.second.scene
-								goBack={() => {
-									navigator.pop();
+						case 'Character Sheet':
+							return <routes.characterSheet.scene
+								name={that.state.selectedCharacter}
+								toCharacterSelect={() => {
+									navigator.popToTop()
 								}}
-
-								toHome={() => {
-									navigator.popToTop();
-								}}
-
-								thingOne={that.state.thingOne}
-
-								updateThingOne={simpleStateUpdateFn('thingOne')}
 							/>;
 							break;
 						default:
-							return <routes.main.scene
-								toTwo={() => {
-									navigator.push(routes.second);
+							return <routes.characterSelect.scene
+								characters={that.state.characters}
+								selectCharacter={(name) => {
+									that.setState({
+										selectedCharacter: name
+									});
+									navigator.push(routes.characterSheet)
 								}}
-
-								thingOne={that.state.thingOne}
-								thingTwo={that.state.thingTwo}
-
-								updateThingTwo={simpleStateUpdateFn('thingTwo')}
 							/>;
 					}
 				}}
@@ -86,23 +104,5 @@ class CharacterSheets extends Component {
 		);
 	}
 }
-
-/*
- * === STYLES ===
- */
-const styles = StyleSheet.create({
-	mainScene: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#4c7cbf',
-	},
-	secondScene: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#6bbf45',
-	}
-});
 
 AppRegistry.registerComponent('CharacterSheets', () => CharacterSheets);

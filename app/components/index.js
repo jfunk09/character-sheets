@@ -1,9 +1,7 @@
-import TestScene from './TestScene';
-import TestScene2 from './TestScene2';
-import MyScene from './MyScene';
+import CharacterSelect from './CharacterSelect';
+import CharacterSheet from './CharacterSheet';
 
 export default {
-	TestScene: TestScene,
-	TestScene2: TestScene2,
-	MyScene: MyScene
+	CharacterSelect: CharacterSelect,
+	CharacterSheet: CharacterSheet
 };
