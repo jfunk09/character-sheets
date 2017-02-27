@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet, Navigator, TouchableHighlight, Button, TextInput, Picker } from 'react-native';
+
 const Item = Picker.Item;
+const _ = require('underscore');
 
 export default class CreateCharacter extends Component {
 	constructor(props) {
@@ -12,169 +14,170 @@ export default class CreateCharacter extends Component {
 			constitution: '3',
 			intelligence: '3',
 			wisdom: '3',
-			charisma: '3'
+			charisma: '3',
+			raceKey: 'human',
+			subRaceKey: 'regular',
+			backgroundKey: 'acolyte'
 		}
 	}
 
 	render () {
+		const that = this;
 		function onStatChange(statKey, statValue) {
 			const update = {};
 			update[statKey] = statValue;
 			this.setState(update);
 		}
+		function onRaceChange(raceKey) {
+			that.setState({raceKey: raceKey});
+		}
+		function onSubRaceChange(subRaceKey) {
+			that.setState({subRaceKey: subRaceKey});
+		}
+		function onBGChange(backgroundKey) {
+			that.setState({backgroundKey: backgroundKey});
+		}
+
+		const statOptions = _.map(["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"], (num) => {
+			return <Item key={num} label={num} value={num} />
+		});
 
 		return (
 			<View style={styles.addSheet}>
 				<View style={styles.nameField}>
 					<TextInput
 						placeholder="Enter character name here"
-						onChangeText={(text) => {this.setState({name: text, inUse: false})}}
+						onChangeText={(text) => {this.setState({name: text})}}
 						style={styles.charNameField}
 					/>
 				</View>
 
 				<View style={styles.statPickers}>
-					<Picker
-						style={styles.statPicker}
-						selectedValue={this.state.strength}
-						onValueChange={onStatChange.bind(this, 'strength')}>
-						<Item label="3" value="3" />
-						<Item label="4" value="4" />
-						<Item label="5" value="5" />
-						<Item label="6" value="6" />
-						<Item label="7" value="7" />
-						<Item label="8" value="8" />
-						<Item label="9" value="9" />
-						<Item label="10" value="10" />
-						<Item label="11" value="11" />
-						<Item label="12" value="12" />
-						<Item label="13" value="13" />
-						<Item label="14" value="14" />
-						<Item label="15" value="15" />
-						<Item label="16" value="16" />
-						<Item label="17" value="17" />
-						<Item label="18" value="18" />
-					</Picker>
-					<Picker
-						style={styles.statPicker}
-						selectedValue={this.state.dexterity}
-						onValueChange={onStatChange.bind(this, 'dexterity')}>
-						<Item label="3" value="3" />
-						<Item label="4" value="4" />
-						<Item label="5" value="5" />
-						<Item label="6" value="6" />
-						<Item label="7" value="7" />
-						<Item label="8" value="8" />
-						<Item label="9" value="9" />
-						<Item label="10" value="10" />
-						<Item label="11" value="11" />
-						<Item label="12" value="12" />
-						<Item label="13" value="13" />
-						<Item label="14" value="14" />
-						<Item label="15" value="15" />
-						<Item label="16" value="16" />
-						<Item label="17" value="17" />
-						<Item label="18" value="18" />
-					</Picker>
-					<Picker
-						style={styles.statPicker}
-						selectedValue={this.state.constitution}
-						onValueChange={onStatChange.bind(this, 'constitution')}>
-						<Item label="3" value="3" />
-						<Item label="4" value="4" />
-						<Item label="5" value="5" />
-						<Item label="6" value="6" />
-						<Item label="7" value="7" />
-						<Item label="8" value="8" />
-						<Item label="9" value="9" />
-						<Item label="10" value="10" />
-						<Item label="11" value="11" />
-						<Item label="12" value="12" />
-						<Item label="13" value="13" />
-						<Item label="14" value="14" />
-						<Item label="15" value="15" />
-						<Item label="16" value="16" />
-						<Item label="17" value="17" />
-						<Item label="18" value="18" />
-					</Picker>
-					<Picker
-						style={styles.statPicker}
-						selectedValue={this.state.intelligence}
-						onValueChange={onStatChange.bind(this, 'intelligence')}>
-						<Item label="3" value="3" />
-						<Item label="4" value="4" />
-						<Item label="5" value="5" />
-						<Item label="6" value="6" />
-						<Item label="7" value="7" />
-						<Item label="8" value="8" />
-						<Item label="9" value="9" />
-						<Item label="10" value="10" />
-						<Item label="11" value="11" />
-						<Item label="12" value="12" />
-						<Item label="13" value="13" />
-						<Item label="14" value="14" />
-						<Item label="15" value="15" />
-						<Item label="16" value="16" />
-						<Item label="17" value="17" />
-						<Item label="18" value="18" />
-					</Picker>
-					<Picker
-						style={styles.statPicker}
-						selectedValue={this.state.wisdom}
-						onValueChange={onStatChange.bind(this, 'wisdom')}>
-						<Item label="3" value="3" />
-						<Item label="4" value="4" />
-						<Item label="5" value="5" />
-						<Item label="6" value="6" />
-						<Item label="7" value="7" />
-						<Item label="8" value="8" />
-						<Item label="9" value="9" />
-						<Item label="10" value="10" />
-						<Item label="11" value="11" />
-						<Item label="12" value="12" />
-						<Item label="13" value="13" />
-						<Item label="14" value="14" />
-						<Item label="15" value="15" />
-						<Item label="16" value="16" />
-						<Item label="17" value="17" />
-						<Item label="18" value="18" />
-					</Picker>
-					<Picker
-						style={styles.statPicker}
-						selectedValue={this.state.charisma}
-						onValueChange={onStatChange.bind(this, 'charisma')}>
-						<Item label="3" value="3" />
-						<Item label="4" value="4" />
-						<Item label="5" value="5" />
-						<Item label="6" value="6" />
-						<Item label="7" value="7" />
-						<Item label="8" value="8" />
-						<Item label="9" value="9" />
-						<Item label="10" value="10" />
-						<Item label="11" value="11" />
-						<Item label="12" value="12" />
-						<Item label="13" value="13" />
-						<Item label="14" value="14" />
-						<Item label="15" value="15" />
-						<Item label="16" value="16" />
-						<Item label="17" value="17" />
-						<Item label="18" value="18" />
-					</Picker>
+					<View style={{flex: 1}}>
+						<Text style={styles.pickerLabel}>STRENGTH</Text>
+						<Picker
+							style={styles.picker}
+							mode="dropdown"
+							selectedValue={this.state.strength}
+							onValueChange={onStatChange.bind(this, 'strength')}>
+							{statOptions}
+						</Picker>
+					</View>
+					<View style={{flex: 1}}>
+						<Text style={styles.pickerLabel}>DEXTERITY</Text>
+						<Picker
+							style={styles.picker}
+							mode="dropdown"
+							selectedValue={this.state.dexterity}
+							onValueChange={onStatChange.bind(this, 'dexterity')}>
+							{statOptions}
+						</Picker>
+					</View>
+					<View style={{flex: 1}}>
+						<Text style={styles.pickerLabel}>CONSTITUTION</Text>
+						<Picker
+							style={styles.picker}
+							mode="dropdown"
+							selectedValue={this.state.constitution}
+							onValueChange={onStatChange.bind(this, 'constitution')}>
+							{statOptions}
+						</Picker>
+					</View>
 				</View>
 
-				<View style={styles.buttons}>
-					<Button
+				<View style={styles.statPickers}>
+					<View style={{flex: 1}}>
+						<Text style={styles.pickerLabel}>INTELLIGENCE</Text>
+						<Picker
+							style={styles.picker}
+							mode="dropdown"
+							selectedValue={this.state.intelligence}
+							onValueChange={onStatChange.bind(this, 'intelligence')}>
+							{statOptions}
+						</Picker>
+					</View>
+					<View style={{flex: 1}}>
+						<Text style={styles.pickerLabel}>WISDOM</Text>
+						<Picker
+							style={styles.picker}
+							mode="dropdown"
+							selectedValue={this.state.wisdom}
+							onValueChange={onStatChange.bind(this, 'wisdom')}>
+							{statOptions}
+						</Picker>
+					</View>
+					<View style={{flex: 1}}>
+						<Text style={styles.pickerLabel}>CHARISMA</Text>
+						<Picker
+							style={styles.picker}
+							mode="dropdown"
+							selectedValue={this.state.charisma}
+							onValueChange={onStatChange.bind(this, 'charisma')}>
+							{statOptions}
+						</Picker>
+					</View>
+				</View>
+
+				<View style={styles.racePickers}>
+					<View style={{flex: 1}}>
+						<Text style={styles.pickerLabel}>RACE</Text>
+						<Picker
+							style={styles.picker}
+							selectedValue={this.state.raceKey}
+							onValueChange={onRaceChange}>
+							<Item label="Human" value="human" />
+							<Item label="Goliath" value="goliath" />
+						</Picker>
+					</View>
+					<View style={{flex: 1}}>
+						<Text style={styles.pickerLabel}>SUBRACE</Text>
+						<Picker
+							style={styles.picker}
+							selectedValue={this.state.subRaceKey}
+							onValueChange={onSubRaceChange}>
+							<Item label="Regular" value="regular" />
+							<Item label="Variant" value="variant" />
+						</Picker>
+					</View>
+				</View>
+
+				<View style={styles.backgroundPicker}>
+					<View style={{flex: 1}}>
+						<Text style={styles.pickerLabel}>BACKGROUND</Text>
+						<Picker
+							style={styles.picker}
+							selectedValue={this.state.backgroundKey}
+							onValueChange={onBGChange}>
+							<Item label="Acolyte" value="acolyte" />
+							<Item label="Sage" value="sage" />
+						</Picker>
+					</View>
+				</View>
+
+				<View style={styles.buttonContainer}>
+					<TouchableHighlight
+						style={styles.createButton}
 						onPress={() => {
-							this.props.create(this.state.name);
-						}}
-						title="Create"
-						color="#BF8E04"
-					/>
-					<Button
-						onPress={this.props.cancel}
-						title="Cancel"
-						color="#BF8E04"
-					/>
+							const characterJson = {
+								name: this.state.name,
+								strength: this.state.strength,
+								dexterity: this.state.dexterity,
+								constitution: this.state.constitution,
+								intelligence: this.state.intelligence,
+								wisdom: this.state.wisdom,
+								charisma: this.state.charisma
+							};
+							this.props.create(characterJson)
+						}}>
+						<Text style={styles.buttonText}>Create</Text>
+					</TouchableHighlight>
+				</View>
+				<View style={styles.buttonContainer}>
+					<TouchableHighlight
+						style={styles.cancelButton}
+						onPress={this.props.cancel}>
+						<Text style={styles.buttonText}>Cancel</Text>
+					</TouchableHighlight>
 				</View>
 			</View>
 		)
@@ -194,26 +197,60 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#bf342a',
+		backgroundColor: '#b2f9c5',
 	},
 	nameField: {
-		flex: 1,
+		flex: 2,
 		flexDirection: 'row'
 	},
 	charNameField: {
-		flex: 1
+		flex: 1,
+		fontSize: 24
 	},
 	statPickers: {
 		flex: 2,
 		flexDirection: 'row'
 	},
-	statPicker: {
-		flex: 1,
-		color: '#000000'
+	racePickers: {
+		flex: 2,
+		flexDirection: 'row'
 	},
-	buttons: {
+	backgroundPicker: {
+		flex: 2,
+		flexDirection: 'row'
+	},
+	pickerLabel: {
 		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-between'
+		marginHorizontal: 5
+	},
+	picker: {
+		flex: 3,
+		marginBottom: 5,
+		marginHorizontal: 5,
+		color: '#000000',
+		backgroundColor: '#b6b7ac'
+	},
+	buttonContainer: {
+		flex: 2,
+		flexDirection: 'row'
+	},
+	createButton: {
+		flex: 1,
+		marginBottom: 5,
+		marginHorizontal: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#0bb41c'
+	},
+	cancelButton: {
+		flex: 1,
+		marginBottom: 5,
+		marginHorizontal: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#b40004'
+	},
+	buttonText: {
+		fontSize: 52
 	}
 });

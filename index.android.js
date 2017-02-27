@@ -9,11 +9,17 @@ import {
 	AsyncStorage
 } from 'react-native';
 import comps from './app/components';
+import Character from './app/Character';
 const _ = require('underscore');
+const Q = require('q');
 
 const STORAGE_KEY = '@AsyncStorageCharacterSheets:key';
 const CHARACTER_STORAGE_NAMES = '@AsyncStorageCharactersSheets:names';
 const CHARACTER_STORAGE_BASE = '@AsyncStorageCharactersSheets:';
+
+function charStorageKey(key) {
+	return CHARACTER_STORAGE_BASE + key;
+}
 
 /*
  * === Components ===
@@ -33,8 +39,37 @@ class CharacterSheets extends Component {
 			const characters = JSON.parse(charString);
 			that.setState({
 				characters: characters || [],
-				selectedCharacter: null,
+				selectedCharacterName: null,
 				isLoading: false
+			});
+		});
+	}
+
+	createNewCharacter(json) {
+		const character = new Character(json);
+		return Q.all([
+			this.updateCharacterList('add', json.name),
+			AsyncStorage.setItem(charStorageKey(json.name), character.toSaveState())
+		]);
+	}
+
+	removeCharacter(name) {
+		return Q.all([
+			this.updateCharacterList('remove', name),
+			AsyncStorage.removeItem(charStorageKey(name))
+		]);
+	}
+
+	updateCharacterList(action, name) {
+		let newCharacterList;
+		if (action === 'add') {
+			newCharacterList = this.state.characters.concat(name);
+		} else if (action === 'remove') {
+			newCharacterList = _.without(this.state.characters, name);
+		}
+		return AsyncStorage.setItem(CHARACTER_STORAGE_NAMES, JSON.stringify(newCharacterList)).then(() => {
+			this.setState({
+				characters: newCharacterList
 			});
 		});
 	}
@@ -53,20 +88,6 @@ class CharacterSheets extends Component {
 			createCharacter: { title: 'Create Character', scene: comps.CreateCharacter }
 		};
 
-		function updateCharacterList(action, name) {
-			let newCharacterList;
-			if (action === 'add') {
-				newCharacterList = that.state.characters.concat(name);
-			} else if (action === 'remove') {
-				newCharacterList = _.without(that.state.characters, name);
-			}
-			return AsyncStorage.setItem(CHARACTER_STORAGE_NAMES, JSON.stringify(newCharacterList)).then(() => {
-				that.setState({
-					characters: newCharacterList
-				});
-			});
-		}
-
 		return (
 			<Navigator
 				initialRoute={routes.characterSelect}
@@ -77,9 +98,9 @@ class CharacterSheets extends Component {
 								characters={that.state.characters}
 								selectCharacter={(name) => {
 									that.setState({
-										selectedCharacter: name
+										selectedCharacterName: name
 									});
-									navigator.push(routes.characterSheet)
+									navigator.push(routes.characterSheet);
 								}}
 								addCharacter={() => {
 									navigator.push(routes.createCharacter)
@@ -88,12 +109,12 @@ class CharacterSheets extends Component {
 							break;
 						case 'Character Sheet':
 							return <routes.characterSheet.scene
-								name={that.state.selectedCharacter}
+								name={that.state.selectedCharacterName}
 								toCharacterSelect={() => {
 									navigator.popToTop()
 								}}
 								deleteCharacter={(name) => {
-									updateCharacterList('remove', name).then(() => {
+									that.removeCharacter(name).then(() => {
 										navigator.popToTop();
 									});
 								}}
@@ -101,12 +122,12 @@ class CharacterSheets extends Component {
 							break;
 						case 'Create Character':
 							return <routes.createCharacter.scene
-								create={(name) => {
-									const inUse = _.contains(that.state.characters, name);
+								create={(json) => {
+									const inUse = _.contains(that.state.characters, json.name) || json.name === '';
 									if (inUse) {
 										return true;
 									} else {
-										updateCharacterList('add', name).then(() => {
+										that.createNewCharacter(json).then(() => {
 											navigator.popToTop();
 										});
 									}
@@ -119,7 +140,7 @@ class CharacterSheets extends Component {
 								characters={that.state.characters}
 								selectCharacter={(name) => {
 									that.setState({
-										selectedCharacter: name
+										selectedCharacterName: name
 									});
 									navigator.push(routes.characterSheet)
 								}}
