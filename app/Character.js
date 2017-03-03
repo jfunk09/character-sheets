@@ -7,6 +7,7 @@ export default class Character {
 		this.intelligence = parseInt(json.intelligence);
 		this.wisdom = parseInt(json.wisdom);
 		this.charisma = parseInt(json.charisma);
+		this.raceKey = json.raceKey;
 	}
 
 	toSaveState() {
@@ -17,7 +18,8 @@ export default class Character {
 			constitution: this.constitution,
 			intelligence: this.intelligence,
 			wisdom: this.wisdom,
-			charisma: this.charisma
+			charisma: this.charisma,
+			raceKey: this.raceKey
 		});
 	}
 

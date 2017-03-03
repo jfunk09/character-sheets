@@ -1,35 +1,66 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet, Navigator, TouchableHighlight, Button, TextInput, Picker } from 'react-native';
+import raceKeys from '../raceKeys';
 
 const Item = Picker.Item;
 const _ = require('underscore');
+
+const NO_SUB_RACE = {
+	key: 'none',
+	label: '-none-'
+};
 
 export default class CreateCharacter extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			name: '',
-			strength: '3',
-			dexterity: '3',
-			constitution: '3',
-			intelligence: '3',
-			wisdom: '3',
-			charisma: '3',
-			raceKey: 'human',
-			subRaceKey: 'regular',
+			test: 'test',
+			strength: '12',
+			dexterity: '12',
+			constitution: '12',
+			intelligence: '12',
+			wisdom: '12',
+			charisma: '12',
+			raceKey: raceKeys[0].key,
+			subRaceKey: raceKeys[0].subRaces ? raceKeys[0].subRaces[0].key : NO_SUB_RACE.key,
 			backgroundKey: 'acolyte'
-		}
+		};
+	}
+
+	getCurrentSubRaces(raceKey) {
+		const race = _.findWhere(raceKeys, {key: raceKey});
+		return race.subRaces ? race.subRaces : [NO_SUB_RACE];
 	}
 
 	render () {
 		const that = this;
+		function createCharacter() {
+			const raceKey = that.state.subRaceKey !== 'none' ? that.state.subRaceKey : that.state.raceKey;
+			const characterJson = {
+				name: that.state.name,
+				strength: that.state.strength,
+				dexterity: that.state.dexterity,
+				constitution: that.state.constitution,
+				intelligence: that.state.intelligence,
+				wisdom: that.state.wisdom,
+				charisma: that.state.charisma,
+				raceKey: raceKey
+			};
+			that.props.create(characterJson)
+		}
 		function onStatChange(statKey, statValue) {
 			const update = {};
 			update[statKey] = statValue;
-			this.setState(update);
+			that.setState(update);
 		}
 		function onRaceChange(raceKey) {
-			that.setState({raceKey: raceKey});
+			const subRaces = that.getCurrentSubRaces(raceKey);
+			const update = {
+				raceKey: raceKey,
+				subRaceKey: subRaces ? subRaces[0].key : NO_SUB_RACE.key
+			};
+			that.setState(update);
 		}
 		function onSubRaceChange(subRaceKey) {
 			that.setState({subRaceKey: subRaceKey});
@@ -38,15 +69,21 @@ export default class CreateCharacter extends Component {
 			that.setState({backgroundKey: backgroundKey});
 		}
 
-		const statOptions = _.map(["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"], (num) => {
+		const statOptions = _.map(['18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3'], (num) => {
 			return <Item key={num} label={num} value={num} />
+		});
+		const raceOptions = _.map(raceKeys, (race) => {
+			return <Item key={race.key} label={race.label} value={race.key} />
+		});
+		const subRaceOptions = _.map(this.getCurrentSubRaces(this.state.raceKey), (subRace) => {
+			return <Item key={subRace.key} label={subRace.label} value={subRace.key} />
 		});
 
 		return (
 			<View style={styles.addSheet}>
 				<View style={styles.nameField}>
 					<TextInput
-						placeholder="Enter character name here"
+						placeholder='Enter character name here'
 						onChangeText={(text) => {this.setState({name: text})}}
 						style={styles.charNameField}
 					/>
@@ -57,7 +94,7 @@ export default class CreateCharacter extends Component {
 						<Text style={styles.pickerLabel}>STRENGTH</Text>
 						<Picker
 							style={styles.picker}
-							mode="dropdown"
+							mode='dropdown'
 							selectedValue={this.state.strength}
 							onValueChange={onStatChange.bind(this, 'strength')}>
 							{statOptions}
@@ -67,7 +104,7 @@ export default class CreateCharacter extends Component {
 						<Text style={styles.pickerLabel}>DEXTERITY</Text>
 						<Picker
 							style={styles.picker}
-							mode="dropdown"
+							mode='dropdown'
 							selectedValue={this.state.dexterity}
 							onValueChange={onStatChange.bind(this, 'dexterity')}>
 							{statOptions}
@@ -77,7 +114,7 @@ export default class CreateCharacter extends Component {
 						<Text style={styles.pickerLabel}>CONSTITUTION</Text>
 						<Picker
 							style={styles.picker}
-							mode="dropdown"
+							mode='dropdown'
 							selectedValue={this.state.constitution}
 							onValueChange={onStatChange.bind(this, 'constitution')}>
 							{statOptions}
@@ -90,7 +127,7 @@ export default class CreateCharacter extends Component {
 						<Text style={styles.pickerLabel}>INTELLIGENCE</Text>
 						<Picker
 							style={styles.picker}
-							mode="dropdown"
+							mode='dropdown'
 							selectedValue={this.state.intelligence}
 							onValueChange={onStatChange.bind(this, 'intelligence')}>
 							{statOptions}
@@ -100,7 +137,7 @@ export default class CreateCharacter extends Component {
 						<Text style={styles.pickerLabel}>WISDOM</Text>
 						<Picker
 							style={styles.picker}
-							mode="dropdown"
+							mode='dropdown'
 							selectedValue={this.state.wisdom}
 							onValueChange={onStatChange.bind(this, 'wisdom')}>
 							{statOptions}
@@ -110,7 +147,7 @@ export default class CreateCharacter extends Component {
 						<Text style={styles.pickerLabel}>CHARISMA</Text>
 						<Picker
 							style={styles.picker}
-							mode="dropdown"
+							mode='dropdown'
 							selectedValue={this.state.charisma}
 							onValueChange={onStatChange.bind(this, 'charisma')}>
 							{statOptions}
@@ -125,8 +162,7 @@ export default class CreateCharacter extends Component {
 							style={styles.picker}
 							selectedValue={this.state.raceKey}
 							onValueChange={onRaceChange}>
-							<Item label="Human" value="human" />
-							<Item label="Goliath" value="goliath" />
+							{raceOptions}
 						</Picker>
 					</View>
 					<View style={{flex: 1}}>
@@ -135,8 +171,7 @@ export default class CreateCharacter extends Component {
 							style={styles.picker}
 							selectedValue={this.state.subRaceKey}
 							onValueChange={onSubRaceChange}>
-							<Item label="Regular" value="regular" />
-							<Item label="Variant" value="variant" />
+							{subRaceOptions}
 						</Picker>
 					</View>
 				</View>
@@ -148,8 +183,8 @@ export default class CreateCharacter extends Component {
 							style={styles.picker}
 							selectedValue={this.state.backgroundKey}
 							onValueChange={onBGChange}>
-							<Item label="Acolyte" value="acolyte" />
-							<Item label="Sage" value="sage" />
+							<Item label='Acolyte' value='acolyte' />
+							<Item label='Sage' value='sage' />
 						</Picker>
 					</View>
 				</View>
@@ -157,18 +192,7 @@ export default class CreateCharacter extends Component {
 				<View style={styles.buttonContainer}>
 					<TouchableHighlight
 						style={styles.createButton}
-						onPress={() => {
-							const characterJson = {
-								name: this.state.name,
-								strength: this.state.strength,
-								dexterity: this.state.dexterity,
-								constitution: this.state.constitution,
-								intelligence: this.state.intelligence,
-								wisdom: this.state.wisdom,
-								charisma: this.state.charisma
-							};
-							this.props.create(characterJson)
-						}}>
+						onPress={createCharacter}>
 						<Text style={styles.buttonText}>Create</Text>
 					</TouchableHighlight>
 				</View>

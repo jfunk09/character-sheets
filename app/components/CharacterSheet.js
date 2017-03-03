@@ -50,6 +50,9 @@ export default class CharacterSheet extends Component {
 						<Text style={styles.deleteButtonText}>&times;</Text>
 					</TouchableHighlight>
 				</View>
+				<View>
+					<Text>{this.state.character.raceKey}</Text>
+				</View>
 				<View style={styles.statRow}>
 					<View style={styles.statBin}>
 						<Text style={styles.statLabel}>Strength:</Text>

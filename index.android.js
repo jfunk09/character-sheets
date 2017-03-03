@@ -135,19 +135,6 @@ class CharacterSheets extends Component {
 								cancel={() => navigator.popToTop()}
 							/>;
 							break;
-						default:
-							return <routes.characterSelect.scene
-								characters={that.state.characters}
-								selectCharacter={(name) => {
-									that.setState({
-										selectedCharacterName: name
-									});
-									navigator.push(routes.characterSheet)
-								}}
-								addCharacter={() => {
-									navigator.push(routes.createCharacter)
-								}}
-							/>;
 					}
 				}}
 			/>
