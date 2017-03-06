@@ -51,7 +51,7 @@ export default class CharacterSheet extends Component {
 					</TouchableHighlight>
 				</View>
 				<View>
-					<Text>{this.state.character.raceKey}</Text>
+					<Text>{this.state.character.raceKey} ({this.state.character.backgroundKey})</Text>
 				</View>
 				<View style={styles.statRow}>
 					<View style={styles.statBin}>

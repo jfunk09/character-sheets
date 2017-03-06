@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet, Navigator, TouchableHighlight, Button, TextInput, Picker } from 'react-native';
 import raceKeys from '../raceKeys';
+import backgrounds from '../backgrounds';
 
 const Item = Picker.Item;
 const _ = require('underscore');
@@ -24,7 +25,7 @@ export default class CreateCharacter extends Component {
 			charisma: '12',
 			raceKey: raceKeys[0].key,
 			subRaceKey: raceKeys[0].subRaces ? raceKeys[0].subRaces[0].key : NO_SUB_RACE.key,
-			backgroundKey: 'acolyte'
+			backgroundKey: backgrounds[0].key
 		};
 	}
 
@@ -45,7 +46,8 @@ export default class CreateCharacter extends Component {
 				intelligence: that.state.intelligence,
 				wisdom: that.state.wisdom,
 				charisma: that.state.charisma,
-				raceKey: raceKey
+				raceKey: raceKey,
+				backgroundKey: that.state.backgroundKey
 			};
 			that.props.create(characterJson)
 		}
@@ -77,6 +79,9 @@ export default class CreateCharacter extends Component {
 		});
 		const subRaceOptions = _.map(this.getCurrentSubRaces(this.state.raceKey), (subRace) => {
 			return <Item key={subRace.key} label={subRace.label} value={subRace.key} />
+		});
+		const bgOptions = _.map(backgrounds, (bg) => {
+			return <Item key={bg.key} label={bg.label} value={bg.key} />
 		});
 
 		return (
@@ -183,8 +188,7 @@ export default class CreateCharacter extends Component {
 							style={styles.picker}
 							selectedValue={this.state.backgroundKey}
 							onValueChange={onBGChange}>
-							<Item label='Acolyte' value='acolyte' />
-							<Item label='Sage' value='sage' />
+							{bgOptions}
 						</Picker>
 					</View>
 				</View>
