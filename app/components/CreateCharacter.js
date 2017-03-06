@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet, Navigator, TouchableHighlight, Button, TextInput, Picker } from 'react-native';
 import raceKeys from '../raceKeys';
-import backgrounds from '../backgrounds';
+import backgroundKeys from '../backgrounds/backgroundTemplates';
 
 const Item = Picker.Item;
 const _ = require('underscore');
@@ -25,7 +25,7 @@ export default class CreateCharacter extends Component {
 			charisma: '12',
 			raceKey: raceKeys[0].key,
 			subRaceKey: raceKeys[0].subRaces ? raceKeys[0].subRaces[0].key : NO_SUB_RACE.key,
-			backgroundKey: backgrounds[0].key
+			backgroundKey: backgroundKeys[0].key
 		};
 	}
 
@@ -80,7 +80,7 @@ export default class CreateCharacter extends Component {
 		const subRaceOptions = _.map(this.getCurrentSubRaces(this.state.raceKey), (subRace) => {
 			return <Item key={subRace.key} label={subRace.label} value={subRace.key} />
 		});
-		const bgOptions = _.map(backgrounds, (bg) => {
+		const bgOptions = _.map(backgroundKeys, (bg) => {
 			return <Item key={bg.key} label={bg.label} value={bg.key} />
 		});
 

@@ -51,7 +51,15 @@ export default class CharacterSheet extends Component {
 					</TouchableHighlight>
 				</View>
 				<View>
-					<Text>{this.state.character.raceKey} ({this.state.character.backgroundKey})</Text>
+					<Text>{this.state.character.raceKey} ({this.state.character.background.label})</Text>
+				</View>
+				<View style={styles.bgRow}>
+					<TouchableHighlight
+						style={styles.bgButton}
+						underlayColor="#cccca6"
+						onPress={this.props.toCharacterSelect}>
+						<Text style={styles.bgButtonText}>{this.state.character.background.featureDescription}</Text>
+					</TouchableHighlight>
 				</View>
 				<View style={styles.statRow}>
 					<View style={styles.statBin}>
@@ -138,5 +146,14 @@ const styles = StyleSheet.create({
 	statValue: {
 		flex: 2,
 		fontSize: 24
+	},
+	bgRow: {
+		flex: 1
+	},
+	bgButton: {
+		flex: 1
+	},
+	bgButtonText: {
+		fontSize: 18
 	}
 });
