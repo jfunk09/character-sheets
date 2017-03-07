@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, StyleSheet, Navigator, TouchableHighlight, Button, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, Navigator, TouchableHighlight, Button, AsyncStorage, Modal } from 'react-native';
 import Character from '../Character';
 
 const CHARACTER_STORAGE_BASE = '@AsyncStorageCharactersSheets:';
@@ -11,7 +11,8 @@ export default class CharacterSheet extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLoading: true
+			isLoading: true,
+			backgroundModal: false
 		}
 	}
 
@@ -25,6 +26,14 @@ export default class CharacterSheet extends Component {
 				character: character
 			});
 		});
+	}
+
+	flipModalState(modalKey) {
+		switch(modalKey) {
+			case 'background':
+				this.setState({backgroundModal: !this.state.backgroundModal});
+				break;
+		}
 	}
 
 	render () {
@@ -51,14 +60,16 @@ export default class CharacterSheet extends Component {
 					</TouchableHighlight>
 				</View>
 				<View>
-					<Text>{this.state.character.raceKey} ({this.state.character.background.label})</Text>
+					<Text>{this.state.character.raceKey}</Text>
 				</View>
 				<View style={styles.bgRow}>
 					<TouchableHighlight
 						style={styles.bgButton}
 						underlayColor="#cccca6"
-						onPress={this.props.toCharacterSelect}>
-						<Text style={styles.bgButtonText}>{this.state.character.background.featureDescription}</Text>
+						onPress={() => {
+							this.flipModalState('background');
+						}}>
+						<Text style={styles.bgButtonText}>Background: {this.state.character.background.label}</Text>
 					</TouchableHighlight>
 				</View>
 				<View style={styles.statRow}>
@@ -89,6 +100,21 @@ export default class CharacterSheet extends Component {
 						<Text style={styles.statValue}>{this.state.character.charisma}</Text>
 					</View>
 				</View>
+
+				<Modal
+					animationType={"slide"}
+					transparent={false}
+					visible={this.state.backgroundModal}
+					onRequestClose={() => {}}>
+					<TouchableHighlight
+						style={styles.bgButton}
+						underlayColor="#cccca6"
+						onPress={() => {
+							this.flipModalState('background');
+						}}>
+						<Text style={styles.bgButtonText}>Close Modal</Text>
+					</TouchableHighlight>
+				</Modal>
 			</View>
 		)
 	}
@@ -148,7 +174,8 @@ const styles = StyleSheet.create({
 		fontSize: 24
 	},
 	bgRow: {
-		flex: 1
+		flex: 1,
+		flexDirection: 'row'
 	},
 	bgButton: {
 		flex: 1
