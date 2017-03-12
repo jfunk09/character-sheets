@@ -44,14 +44,14 @@ export default class CharacterSheet extends Component {
 				<View style={styles.headerRow}>
 					<TouchableHighlight
 						style={styles.backButton}
-						underlayColor="#cccca6"
+						underlayColor="#f0f0f0"
 						onPress={this.props.toCharacterSelect}>
 						<Text style={styles.backButtonText}>&lt;</Text>
 					</TouchableHighlight>
 					<Text style={styles.characterName}>{this.state.character.name}</Text>
 					<TouchableHighlight
 						style={styles.deleteButton}
-						underlayColor="#ffc8c8"
+						underlayColor="#b44444"
 						onPress={this.props.deleteCharacter.bind(null, this.props.name)}>
 						<Text style={styles.deleteButtonText}>&times;</Text>
 					</TouchableHighlight>

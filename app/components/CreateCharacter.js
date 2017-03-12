@@ -196,14 +196,16 @@ export default class CreateCharacter extends Component {
 				<View style={styles.buttonContainer}>
 					<TouchableHighlight
 						style={styles.createButton}
-						onPress={createCharacter}>
+						onPress={createCharacter}
+						underlayColor="#f0f0f0">
 						<Text style={styles.buttonText}>Create</Text>
 					</TouchableHighlight>
 				</View>
 				<View style={styles.buttonContainer}>
 					<TouchableHighlight
 						style={styles.cancelButton}
-						onPress={this.props.cancel}>
+						onPress={this.props.cancel}
+						underlayColor="#f0f0f0">
 						<Text style={styles.buttonText}>Cancel</Text>
 					</TouchableHighlight>
 				</View>
@@ -225,7 +227,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#b2f9c5',
+		backgroundColor: '#ffffff',
 	},
 	nameField: {
 		flex: 2,
@@ -256,7 +258,7 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 		marginHorizontal: 5,
 		color: '#000000',
-		backgroundColor: '#b6b7ac'
+		backgroundColor: '#f0f0f0'
 	},
 	buttonContainer: {
 		flex: 2,
@@ -266,19 +268,22 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginBottom: 5,
 		marginHorizontal: 5,
+		borderRadius: 5,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#0bb41c'
+		backgroundColor: '#48b454'
 	},
 	cancelButton: {
 		flex: 1,
 		marginBottom: 5,
 		marginHorizontal: 5,
+		borderRadius: 5,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#b40004'
+		backgroundColor: '#b44444'
 	},
 	buttonText: {
-		fontSize: 52
+		color: '#000000',
+		fontSize: 48
 	}
 });

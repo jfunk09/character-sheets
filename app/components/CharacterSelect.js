@@ -27,7 +27,7 @@ export default class CharacterSelect extends Component {
 								<TouchableHighlight
 									style={styles.addButton}
 									onPress={this.props.addCharacter}
-									underlayColor="#BFAA4F">
+									underlayColor="#f0f0f0">
 									<Text style={styles.addButtonText}>+</Text>
 								</TouchableHighlight>
 							)
@@ -35,7 +35,7 @@ export default class CharacterSelect extends Component {
 							return (
 								<TouchableHighlight style={styles.button} onPress={this.props.selectCharacter.bind(null, data)}>
 									<Image style={styles.buttonImage} source={require('../images/charImg.png')}>
-										<Text>{data}</Text>
+										<Text style={styles.buttonText}>{data}</Text>
 									</Image>
 								</TouchableHighlight>
 							)
@@ -59,7 +59,7 @@ CharacterSelect.propTypes = {
 const styles = StyleSheet.create({
 	characterSelect: {
 		flex: 1,
-		backgroundColor: '#bf9b34'
+		backgroundColor: '#ffffff'
 	},
 	button: {
 		height: 60,
@@ -70,7 +70,12 @@ const styles = StyleSheet.create({
 	buttonImage: {
 		height: 60,
 		flex: 1,
-		resizeMode: Image.resizeMode.cover
+		resizeMode: Image.resizeMode.cover,
+		justifyContent: 'center'
+	},
+	buttonText: {
+		paddingLeft: 10,
+		fontSize: 24
 	},
 	addButton: {
 		height: 60,
