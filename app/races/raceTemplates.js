@@ -3,137 +3,153 @@ import races from './';
 export default [
 	{
 		key: 'aarakocra',
-		label: 'Aarakocra'
+		label: 'Aarakocra',
+		classFunction: races.Aarakocra
 	},
 	{
 		key: 'aasimar',
 		label: 'Aasimar',
 		subRaces: [
-			{key: 'fallenAasimar', label: 'Fallen'},
-			{key: 'protectorAasimar', label: 'Protector'},
-			{key: 'scourgeAasimar', label: 'Scourge'}
+			{key: 'fallenAasimar', label: 'Fallen', classFunction: races.FallenAasimar},
+			{key: 'protectorAasimar', label: 'Protector', classFunction: races.ProtectorAasimar},
+			{key: 'scourgeAasimar', label: 'Scourge', classFunction: races.ScourgeAasimar}
 		]
 	},
 	{
 		key: 'bugbear',
-		label: 'Bugbear'
+		label: 'Bugbear',
+		classFunction: races.Bugbear
 	},
 	{
 		key: 'dragonborn',
-		label: 'Dragonborn'
+		label: 'Dragonborn',
+		classFunction: races.Dragonborn
 	},
 	{
 		key: 'dwarf',
 		label: 'Dwarf',
 		subRaces: [
-			{key: 'hillDwarf', label: 'Hill'},
-			{key: 'mountainDwarf', label: 'Mountain'},
-			{key: 'duergar', label: 'Duergar'}
+			{key: 'hillDwarf', label: 'Hill', classFunction: races.HillDwarf},
+			{key: 'mountainDwarf', label: 'Mountain', classFunction: races.MountainDwarf},
+			{key: 'duergar', label: 'Duergar', classFunction: races.Duergar}
 		]
 	},
 	{
 		key: 'elf',
 		label: 'Elf',
 		subRaces: [
-			{key: 'highElf', label: 'High'},
-			{key: 'woodElf', label: 'Wood'},
-			{key: 'darkElf', label: 'Dark'}
+			{key: 'highElf', label: 'High', classFunction: races.HighElf},
+			{key: 'woodElf', label: 'Wood', classFunction: races.WoodElf},
+			{key: 'darkElf', label: 'Dark', classFunction: races.DarkElf}
 		]
 	},
 	{
 		key: 'firbolg',
-		label: 'Firbolg'
+		label: 'Firbolg',
+		classFunction: races.Firbolg
 	},
 	{
 		key: 'genasi',
 		label: 'Genasi',
 		subRaces: [
-			{key: 'airGenasi', label: 'Air'},
-			{key: 'earthGenasi', label: 'Earth'},
-			{key: 'fireGenasi', label: 'Fire'},
-			{key: 'waterGenasi', label: 'Water'}
+			{key: 'airGenasi', label: 'Air', classFunction: races.AirGenasi},
+			{key: 'earthGenasi', label: 'Earth', classFunction: races.EarthGenasi},
+			{key: 'fireGenasi', label: 'Fire', classFunction: races.FireGenasi},
+			{key: 'waterGenasi', label: 'Water', classFunction: races.WaterGenasi}
 		]
 	},
 	{
 		key: 'gnome',
 		label: 'Gnome',
 		subRaces: [
-			{key: 'forestGnome', label: 'Forest'},
-			{key: 'rockGnome', label: 'Rock'},
-			{key: 'deepGnome', label: 'Deep'}
+			{key: 'forestGnome', label: 'Forest', classFunction: races.ForestGnome},
+			{key: 'rockGnome', label: 'Rock', classFunction: races.RockGnome},
+			{key: 'deepGnome', label: 'Deep', classFunction: races.DeepGnome}
 		]
 	},
 	{
 		key: 'goblin',
-		label: 'Goblin'
+		label: 'Goblin',
+		classFunction: races.Goblin
 	},
 	{
 		key: 'goliath',
-		label: 'Goliath'
+		label: 'Goliath',
+		classFunction: races.Goliath
 	},
 	{
 		key: 'halfElf',
-		label: 'Half-elf'
+		label: 'Half-elf',
+		classFunction: races.HalfElf
 	},
 	{
 		key: 'halfOrc',
-		label: 'Half-orc'
+		label: 'Half-orc',
+		classFunction: races.HalfOrc
 	},
 	{
 		key: 'halfling',
 		label: 'Halfling',
 		subRaces: [
-			{key: 'lightfootHalfling', label: 'Lightfoot'},
-			{key: 'stoutHalfling', label: 'Stout'},
-			{key: 'ghostwiseHalfling', label: 'Ghostwise'}
+			{key: 'lightfootHalfling', label: 'Lightfoot', classFunction: races.LightfootHalfling},
+			{key: 'stoutHalfling', label: 'Stout', classFunction: races.StoutHalfling},
+			{key: 'ghostwiseHalfling', label: 'Ghostwise', classFunction: races.GhostwiseHalfling}
 		]
 	},
 	{
 		key: 'hobgoblin',
-		label: 'Hobgoblin'
+		label: 'Hobgoblin',
+		classFunction: races.Hobgoblin
 	},
 	{
 		key: 'human',
 		label: 'Human',
 		subRaces: [
-			{key: 'regularHuman', label: 'Regular'},
-			{key: 'variantHuman', label: 'Variant'}
+			{key: 'regularHuman', label: 'Regular', classFunction: races.RegularHuman},
+			{key: 'variantHuman', label: 'Variant', classFunction: races.VariantHuman}
 		]
 	},
 	{
 		key: 'kenku',
-		label: 'Kenku'
+		label: 'Kenku',
+		classFunction: races.Kenku
 	},
 	{
 		key: 'kobold',
-		label: 'Kobold'
+		label: 'Kobold',
+		classFunction: races.Kobold
 	},
 	{
 		key: 'lizardfolk',
-		label: 'Lizardfolk'
+		label: 'Lizardfolk',
+		classFunction: races.Lizardfolk
 	},
 	{
 		key: 'orc',
-		label: 'Orc'
+		label: 'Orc',
+		classFunction: races.Orc
 	},
 	{
 		key: 'tabaxi',
-		label: 'Tabaxi'
+		label: 'Tabaxi',
+		classFunction: races.Tabaxi
 	},
 	{
 		key: 'tiefling',
 		label: 'Tiefling',
 		subRaces: [
-			{key: 'regularTiefling', label: 'Regular'},
-			{key: 'feralTiefling', label: 'Feral'}
+			{key: 'regularTiefling', label: 'Regular', classFunction: races.RegularTiefling},
+			{key: 'feralTiefling', label: 'Feral', classFunction: races.FeralTiefling}
 		]
 	},
 	{
 		key: 'triton',
-		label: 'Triton'
+		label: 'Triton',
+		classFunction: races.Triton
 	},
 	{
 		key: 'yuanTi',
-		label: 'Yuan-Ti (Pureblood)'
+		label: 'Yuan-Ti (Pureblood)',
+		classFunction: races.YuanTi
 	}
 ];

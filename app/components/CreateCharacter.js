@@ -37,7 +37,6 @@ export default class CreateCharacter extends Component {
 	render () {
 		const that = this;
 		function createCharacter() {
-			const raceKey = that.state.subRaceKey !== 'none' ? that.state.subRaceKey : that.state.raceKey;
 			const characterJson = {
 				name: that.state.name,
 				strength: that.state.strength,
@@ -46,7 +45,8 @@ export default class CreateCharacter extends Component {
 				intelligence: that.state.intelligence,
 				wisdom: that.state.wisdom,
 				charisma: that.state.charisma,
-				raceKey: raceKey,
+				raceKey: that.state.raceKey,
+				subRaceKey: that.state.subRaceKey !== NO_SUB_RACE.key ? that.state.subRaceKey : null,
 				backgroundKey: that.state.backgroundKey
 			};
 			that.props.create(characterJson)
