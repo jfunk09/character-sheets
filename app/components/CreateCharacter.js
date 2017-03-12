@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet, Navigator, TouchableHighlight, Button, TextInput, Picker } from 'react-native';
-import raceKeys from '../raceKeys';
+import raceTemplates from '../races/raceTemplates';
 import backgroundKeys from '../backgrounds/backgroundTemplates';
 
 const Item = Picker.Item;
@@ -23,14 +23,14 @@ export default class CreateCharacter extends Component {
 			intelligence: '12',
 			wisdom: '12',
 			charisma: '12',
-			raceKey: raceKeys[0].key,
-			subRaceKey: raceKeys[0].subRaces ? raceKeys[0].subRaces[0].key : NO_SUB_RACE.key,
+			raceKey: raceTemplates[0].key,
+			subRaceKey: raceTemplates[0].subRaces ? raceTemplates[0].subRaces[0].key : NO_SUB_RACE.key,
 			backgroundKey: backgroundKeys[0].key
 		};
 	}
 
 	getCurrentSubRaces(raceKey) {
-		const race = _.findWhere(raceKeys, {key: raceKey});
+		const race = _.findWhere(raceTemplates, {key: raceKey});
 		return race.subRaces ? race.subRaces : [NO_SUB_RACE];
 	}
 
@@ -74,7 +74,7 @@ export default class CreateCharacter extends Component {
 		const statOptions = _.map(['18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3'], (num) => {
 			return <Item key={num} label={num} value={num} />
 		});
-		const raceOptions = _.map(raceKeys, (race) => {
+		const raceOptions = _.map(raceTemplates, (race) => {
 			return <Item key={race.key} label={race.label} value={race.key} />
 		});
 		const subRaceOptions = _.map(this.getCurrentSubRaces(this.state.raceKey), (subRace) => {

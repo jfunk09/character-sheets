@@ -1,3 +1,5 @@
+import races from './';
+
 export default [
 	{
 		key: 'aarakocra',
@@ -74,7 +76,7 @@ export default [
 		label: 'Half-elf'
 	},
 	{
-		key: 'halforc',
+		key: 'halfOrc',
 		label: 'Half-orc'
 	},
 	{
