@@ -4,5 +4,6 @@ import Genasi from './Genasi';
 export default class AirGenasi extends Genasi {
 	constructor() {
 		super('airGenasi');
+		this.statMods.dexterity = 1;
 	}
 }

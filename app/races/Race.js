@@ -6,7 +6,14 @@ export default class Race {
 		this.key = key;
 		const raceTemplate = _.findWhere(raceTemplates, {key: key});
 		this.label = raceTemplate.label;
-		this.statMods = [];
+		this.statMods = {
+			strength: 0,
+			dexterity: 0,
+			constitution: 0,
+			intelligence: 0,
+			wisdom: 0,
+			charisma: 0
+		};
 	}
 
 	decodeDetails(str) {

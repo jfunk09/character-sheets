@@ -5,5 +5,6 @@ export default class Dwarf extends Race {
 	constructor(subKey) {
 		super('dwarf');
 		this.subKey = subKey;
+		this.statMods.constitution = 2;
 	}
 }
