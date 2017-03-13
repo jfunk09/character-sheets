@@ -16,12 +16,20 @@ export default class Race {
 		};
 	}
 
+	get isIncomplete() {
+		return false;
+	}
+
+	get optionsTemplate() {
+		return null;
+	}
+
 	decodeDetails(str) {
-		const details = JSON.parse(str);
+		// const details = JSON.parse(str);
 	}
 
 	toSaveState() {
-		return '';
+		return JSON.stringify(null);
 	}
 
 	// TODO: idea for racial options or any option, have option object, including key/value/callback that can be retrieved via relevant options query, and used in option picker Component

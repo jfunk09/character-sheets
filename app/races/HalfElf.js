@@ -1,17 +1,60 @@
 import Race from './Race';
+import comps from '../components';
 const _ = require('underscore');
+
+const statOptions = [
+	{key: 'strength', label: 'Strength'},
+	{key: 'dexterity', label: 'Dexterity'},
+	{key: 'constitution', label: 'Constitution'},
+	{key: 'intelligence', label: 'Intelligence'},
+	{key: 'wisdom', label: 'Wisdom'}
+];
 
 export default class HalfElf extends Race {
 	constructor() {
 		super('halfElf');
 		this.statMods.charisma = 2;
+		this.selectedMod1 = null;
+		this.selectedMod2 = null;
 	}
 
-	pickStatMods(statKeys) {
-		if (statKeys.length !== 2 || _.contains(statKeys, 'charisma')) {
-			throw new Error("Half Elf can only have 2 stat boosts in addition to charisma, each of 1");
+	get isIncomplete() {
+		return !this.selectedMod1 || !this.selectedMod2;
+	}
+
+	get optionsTemplate() {
+		return [{
+			component: comps.RacialStatPicker,
+			options: statOptions,
+			onSave: this.setSelectedMods
+		}];
+	}
+
+	resetSelectedMods() {
+		_.each(statOptions, (stat) => {
+			this.statMods[stat.key] = 0;
+		});
+	}
+
+	setSelectedMods(statKey1, statKey2) {
+		this.selectedMod1 = statKey1;
+		this.selectedMod2 = statKey2;
+		this.resetSelectedMods();
+		this.statMods[statKey1] = 1;
+		this.statMods[statKey2] = 1;
+	}
+
+	decodeDetails(str) {
+		const details = JSON.parse(str);
+		if (details) {
+			this.setSelectedMods(details.selectedMod1, details.selectedMod2);
 		}
-		this.statMods[statKeys[0]] = 1;
-		this.statMods[statKeys[1]] = 1;
+	}
+
+	toSaveState() {
+		return JSON.stringify({
+			selectedMod1: this.selectedMod1,
+			selectedMod2: this.selectedMod2
+		});
 	}
 }

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet, Navigator, TouchableHighlight, Button, AsyncStorage, Modal } from 'react-native';
 import Character from '../Character';
+const _ = require('underscore');
 
 const CHARACTER_STORAGE_BASE = '@AsyncStorageCharactersSheets:';
 function charStorageKey(key) {
@@ -12,7 +13,8 @@ export default class CharacterSheet extends Component {
 		super(props);
 		this.state = {
 			isLoading: true,
-			backgroundModal: false
+			backgroundModal: false,
+			raceModal: false
 		}
 	}
 
@@ -33,6 +35,9 @@ export default class CharacterSheet extends Component {
 			case 'background':
 				this.setState({backgroundModal: !this.state.backgroundModal});
 				break;
+			case 'race':
+				this.setState({raceModal: !this.state.raceModal});
+				break;
 		}
 	}
 
@@ -48,6 +53,12 @@ export default class CharacterSheet extends Component {
 				<View><Text>Loading...</Text></View>
 			);
 		}
+		const racialOptionsTemplate = this.state.character.race.isIncomplete ? this.state.character.race.optionsTemplate : null;
+		const racialOptions = racialOptionsTemplate ?
+			_.map(racialOptionsTemplate, (template, index) => {
+				return <template.component key={index} options={template.options} onSave={template.onSave} />
+			}) : null;
+
 		return (
 			<View style={styles.characterSheet}>
 				<View style={styles.headerRow}>
@@ -65,13 +76,20 @@ export default class CharacterSheet extends Component {
 						<Text style={styles.deleteButtonText}>&times;</Text>
 					</TouchableHighlight>
 				</View>
-				<View>
-					<Text>{this.state.character.raceKey}</Text>
+				<View style={styles.raceRow}>
+					<TouchableHighlight
+						style={styles.raceButton}
+						underlayColor="#f0f0f0"
+						onPress={() => {
+							this.flipModalState('race');
+						}}>
+						<Text style={styles.raceButtonText}>{this.state.character.raceKey}</Text>
+					</TouchableHighlight>
 				</View>
 				<View style={styles.bgRow}>
 					<TouchableHighlight
 						style={styles.bgButton}
-						underlayColor="#cccca6"
+						underlayColor="#f0f0f0"
 						onPress={() => {
 							this.flipModalState('background');
 						}}>
@@ -114,9 +132,25 @@ export default class CharacterSheet extends Component {
 					onRequestClose={() => {}}>
 					<TouchableHighlight
 						style={styles.bgButton}
-						underlayColor="#cccca6"
+						underlayColor="#f0f0f0"
 						onPress={() => {
 							this.flipModalState('background');
+						}}>
+						<Text style={styles.bgButtonText}>Close Modal</Text>
+					</TouchableHighlight>
+				</Modal>
+
+				<Modal
+					animationType={"slide"}
+					transparent={false}
+					visible={this.state.raceModal}
+					onRequestClose={() => {}}>
+					{racialOptions}
+					<TouchableHighlight
+						style={styles.bgButton}
+						underlayColor="#f0f0f0"
+						onPress={() => {
+							this.flipModalState('race');
 						}}>
 						<Text style={styles.bgButtonText}>Close Modal</Text>
 					</TouchableHighlight>
@@ -184,9 +218,21 @@ const styles = StyleSheet.create({
 		flexDirection: 'row'
 	},
 	bgButton: {
-		flex: 1
+		flex: 1,
+		justifyContent: 'center'
 	},
 	bgButtonText: {
+		fontSize: 18
+	},
+	raceRow: {
+		flex: 1,
+		flexDirection: 'row'
+	},
+	raceButton: {
+		flex: 1,
+		justifyContent: 'center'
+	},
+	raceButtonText: {
 		fontSize: 18
 	}
 });
