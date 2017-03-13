@@ -1,4 +1,5 @@
-import backgroundFactory from './backgrounds/backgroundFactory'
+import backgroundFactory from './backgrounds/backgroundFactory';
+import raceFactory from './races/raceFactory';
 
 export default class Character {
 	constructor(json) {
@@ -10,6 +11,8 @@ export default class Character {
 		this.wisdom = parseInt(json.wisdom);
 		this.charisma = parseInt(json.charisma);
 		this.raceKey = json.raceKey;
+		this.subRaceKey = json.subRaceKey;
+		this.race = raceFactory(json.raceKey, json.subRaceKey, json.raceSaveState);
 		this.backgroundKey = json.backgroundKey;
 		this.background = backgroundFactory(json.backgroundKey, json.backgroundSaveState);
 	}
@@ -24,6 +27,8 @@ export default class Character {
 			wisdom: this.wisdom,
 			charisma: this.charisma,
 			raceKey: this.raceKey,
+			subRaceKey: this.subRaceKey,
+			raceSaveState: this.race ? this.race.toSaveState() : null,
 			backgroundKey: this.backgroundKey,
 			backgroundSaveState: this.background ? this.background.toSaveState() : null
 		});

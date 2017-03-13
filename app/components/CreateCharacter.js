@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet, Navigator, TouchableHighlight, Button, TextInput, Picker } from 'react-native';
-import raceKeys from '../raceKeys';
+import raceTemplates from '../races/raceTemplates';
 import backgroundKeys from '../backgrounds/backgroundTemplates';
 
 const Item = Picker.Item;
@@ -23,21 +23,20 @@ export default class CreateCharacter extends Component {
 			intelligence: '12',
 			wisdom: '12',
 			charisma: '12',
-			raceKey: raceKeys[0].key,
-			subRaceKey: raceKeys[0].subRaces ? raceKeys[0].subRaces[0].key : NO_SUB_RACE.key,
+			raceKey: raceTemplates[0].key,
+			subRaceKey: raceTemplates[0].subRaces ? raceTemplates[0].subRaces[0].key : NO_SUB_RACE.key,
 			backgroundKey: backgroundKeys[0].key
 		};
 	}
 
 	getCurrentSubRaces(raceKey) {
-		const race = _.findWhere(raceKeys, {key: raceKey});
+		const race = _.findWhere(raceTemplates, {key: raceKey});
 		return race.subRaces ? race.subRaces : [NO_SUB_RACE];
 	}
 
 	render () {
 		const that = this;
 		function createCharacter() {
-			const raceKey = that.state.subRaceKey !== 'none' ? that.state.subRaceKey : that.state.raceKey;
 			const characterJson = {
 				name: that.state.name,
 				strength: that.state.strength,
@@ -46,7 +45,8 @@ export default class CreateCharacter extends Component {
 				intelligence: that.state.intelligence,
 				wisdom: that.state.wisdom,
 				charisma: that.state.charisma,
-				raceKey: raceKey,
+				raceKey: that.state.raceKey,
+				subRaceKey: that.state.subRaceKey !== NO_SUB_RACE.key ? that.state.subRaceKey : null,
 				backgroundKey: that.state.backgroundKey
 			};
 			that.props.create(characterJson)
@@ -74,7 +74,7 @@ export default class CreateCharacter extends Component {
 		const statOptions = _.map(['18', '17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3'], (num) => {
 			return <Item key={num} label={num} value={num} />
 		});
-		const raceOptions = _.map(raceKeys, (race) => {
+		const raceOptions = _.map(raceTemplates, (race) => {
 			return <Item key={race.key} label={race.label} value={race.key} />
 		});
 		const subRaceOptions = _.map(this.getCurrentSubRaces(this.state.raceKey), (subRace) => {
@@ -196,14 +196,16 @@ export default class CreateCharacter extends Component {
 				<View style={styles.buttonContainer}>
 					<TouchableHighlight
 						style={styles.createButton}
-						onPress={createCharacter}>
+						onPress={createCharacter}
+						underlayColor="#f0f0f0">
 						<Text style={styles.buttonText}>Create</Text>
 					</TouchableHighlight>
 				</View>
 				<View style={styles.buttonContainer}>
 					<TouchableHighlight
 						style={styles.cancelButton}
-						onPress={this.props.cancel}>
+						onPress={this.props.cancel}
+						underlayColor="#f0f0f0">
 						<Text style={styles.buttonText}>Cancel</Text>
 					</TouchableHighlight>
 				</View>
@@ -225,7 +227,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#b2f9c5',
+		backgroundColor: '#ffffff',
 	},
 	nameField: {
 		flex: 2,
@@ -256,7 +258,7 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 		marginHorizontal: 5,
 		color: '#000000',
-		backgroundColor: '#b6b7ac'
+		backgroundColor: '#f0f0f0'
 	},
 	buttonContainer: {
 		flex: 2,
@@ -266,19 +268,22 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginBottom: 5,
 		marginHorizontal: 5,
+		borderRadius: 5,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#0bb41c'
+		backgroundColor: '#48b454'
 	},
 	cancelButton: {
 		flex: 1,
 		marginBottom: 5,
 		marginHorizontal: 5,
+		borderRadius: 5,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#b40004'
+		backgroundColor: '#b44444'
 	},
 	buttonText: {
-		fontSize: 52
+		color: '#000000',
+		fontSize: 48
 	}
 });

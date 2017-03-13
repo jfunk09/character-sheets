@@ -36,6 +36,12 @@ export default class CharacterSheet extends Component {
 		}
 	}
 
+	displayStat(statKey) {
+		const base = this.state.character[statKey];
+		const mod = this.state.character.race.statMods[statKey];
+		return base + mod;
+	}
+
 	render () {
 		if (this.state.isLoading) {
 			return (
@@ -47,14 +53,14 @@ export default class CharacterSheet extends Component {
 				<View style={styles.headerRow}>
 					<TouchableHighlight
 						style={styles.backButton}
-						underlayColor="#cccca6"
+						underlayColor="#f0f0f0"
 						onPress={this.props.toCharacterSelect}>
 						<Text style={styles.backButtonText}>&lt;</Text>
 					</TouchableHighlight>
 					<Text style={styles.characterName}>{this.state.character.name}</Text>
 					<TouchableHighlight
 						style={styles.deleteButton}
-						underlayColor="#ffc8c8"
+						underlayColor="#b44444"
 						onPress={this.props.deleteCharacter.bind(null, this.props.name)}>
 						<Text style={styles.deleteButtonText}>&times;</Text>
 					</TouchableHighlight>
@@ -75,29 +81,29 @@ export default class CharacterSheet extends Component {
 				<View style={styles.statRow}>
 					<View style={styles.statBin}>
 						<Text style={styles.statLabel}>Strength:</Text>
-						<Text style={styles.statValue}>{this.state.character.strength}</Text>
+						<Text style={styles.statValue}>{this.displayStat('strength')}</Text>
 					</View>
 					<View style={styles.statBin}>
 						<Text style={styles.statLabel}>Dexterity:</Text>
-						<Text style={styles.statValue}>{this.state.character.dexterity}</Text>
+						<Text style={styles.statValue}>{this.displayStat('dexterity')}</Text>
 					</View>
 					<View style={styles.statBin}>
 						<Text style={styles.statLabel}>Constitution:</Text>
-						<Text style={styles.statValue}>{this.state.character.constitution}</Text>
+						<Text style={styles.statValue}>{this.displayStat('constitution')}</Text>
 					</View>
 				</View>
 				<View style={styles.statRow}>
 					<View style={styles.statBin}>
 						<Text style={styles.statLabel}>Intelligence:</Text>
-						<Text style={styles.statValue}>{this.state.character.intelligence}</Text>
+						<Text style={styles.statValue}>{this.displayStat('intelligence')}</Text>
 					</View>
 					<View style={styles.statBin}>
 						<Text style={styles.statLabel}>Wisdom:</Text>
-						<Text style={styles.statValue}>{this.state.character.wisdom}</Text>
+						<Text style={styles.statValue}>{this.displayStat('wisdom')}</Text>
 					</View>
 					<View style={styles.statBin}>
 						<Text style={styles.statLabel}>Charisma:</Text>
-						<Text style={styles.statValue}>{this.state.character.charisma}</Text>
+						<Text style={styles.statValue}>{this.displayStat('charisma')}</Text>
 					</View>
 				</View>
 

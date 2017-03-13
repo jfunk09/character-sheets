@@ -1,4 +1,4 @@
-import backgroundTemplates from './backgroundTemplates'
+import backgroundTemplates from './backgroundTemplates';
 const _ = require('underscore');
 
 export default class Background {
